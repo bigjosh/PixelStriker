@@ -662,7 +662,9 @@ void bellCycle() {
 
 #define BOTTOM_ROW  3            // The first visibe row 
 
-#define BELL_ROW (300)
+#define HEIGHT (3.7)
+
+#define PUCK_BRIGHTNESS (0x80)
 
 // All compuations done in meters
 
@@ -673,32 +675,61 @@ void bounce(float v0) {  // v0= initial speed meters per second up
   static float g=-8.5;   // Gravity accelerating down 
 
   float x=0;        // Vertical position in meters (up is +)
+  
   float dt=MIN_FRAME_TIME;      // Time that elapsed since last frame was drawn
 
   
   float v=v0;       // Velocity 
 
   
-  float f = 1.2;    // Frictional force - alwasy acts in oposite direction of motion TODO
+  float f = 1.6;    // Frictional force - how much speed we loose each second. alwasy acts in oposite direction of motion.
 
   int puckRow_prev = 0;     // Location of previous starting s so we can fill inbtween
   int puckRow_prevprev = 0; // Location of dopo previous starting so we can erase behind us
 
   while (1) {
+    
+    #ifdef DEBUG
+      Serial.print("dt=");Serial.print(dt);  Serial.print("v=");Serial.print(v);  Serial.print("x=");Serial.print(x);Serial.println(".");
+    #endif
+    
+    float v_new =  v + ( g * dt );
 
-    float v_new = v + ( g * dt );
-
-    x =  x + ((v + v_new)/2); 
+/* TODOD
+    // friction alwasy acts agains motion
+    if (v_new>0) {
+      v_new = v_new - ( f * dt );
+    } else {
+      v_new = v_new + ( f * dt );
+    }
+*/
+    x =  x + (((v + v_new)/2) * dt);     // Take average speed durring dt and update position 
 
     v=v_new;
 
+
     if (x<0) break;  // dont fall though the ground  
 
+    if (x>HEIGHT) {
+
+      int topRow = (HEIGHT * LEDS_PER_METER) + BOTTOM_ROW;
+      
+      for(int i=0;i<topRow;i++){
+          sendRowRGB( 0x00, 0x00, 0x00, 0x00 );      
+      }
+      
+      sendRowRGB( 0xff, 0xff, 0x00, 0x00 );      
+   
+      ringBell( v * 2);      // This takes long enough that it will trigger a show()
+      clearIntsOff();
+
+      v=0;      // Stop puck in our tracks! Looses all momentum to the bell
+      x=HEIGHT;
+    }
+    
     int puckRow = (x * LEDS_PER_METER) + BOTTOM_ROW;
 
-    if (puckRow>=BELL_ROW) {   // Hit bell?
-      ringBell(9);
-    }
+
 
     int rowsSent=0;               // Total number of rows sent to we can calculate how long it took 
 
@@ -724,7 +755,7 @@ void bounce(float v0) {  // v0= initial speed meters per second up
     
         while (rowsSent<=puckRow) {
         
-          sendRowRGB( 0xff , 0x00, 0x00, 0x30 );   // The actual blured puck  
+          sendRowRGB( 0xff , 0x00, 0x00, PUCK_BRIGHTNESS );   // The actual blured puck  
           rowsSent++;
      
         }
@@ -742,7 +773,7 @@ void bounce(float v0) {  // v0= initial speed meters per second up
     
         while (rowsSent<puckRow_prev) {
         
-          sendRowRGB( 0xff , 0x00, 0x00, 0x30 );   // The actual blured puck  
+          sendRowRGB( 0xff , 0x00, 0x00, PUCK_BRIGHTNESS );   // The actual blured puck  
           rowsSent++;
      
         }
@@ -769,7 +800,7 @@ void bounce(float v0) {  // v0= initial speed meters per second up
         }
     
         while (rowsSent<=puckRow) {       
-          sendRowRGB( 0xff , 0x00, 0x00, 0x30 );   // The actual blured puck  
+          sendRowRGB( 0xff , 0x00, 0x00, PUCK_BRIGHTNESS );   // The actual blured puck  
           rowsSent++;
         }
 
@@ -783,7 +814,7 @@ void bounce(float v0) {  // v0= initial speed meters per second up
     }
 
   
-    float dt = (0.000002 * 8 * 3 * rowsSent ) + SHOW_DELAY;    // It takes about 2us per bit - 8 bits per byte - 3 bytes per row
+    dt = (0.000002 * 8 * 3 * rowsSent ) + SHOW_DELAY;    // It takes about 2us per bit - 8 bits per byte - 3 bytes per row
 
     if ( dt < MIN_FRAME_TIME)  {      // Fastest the Neopixels can actually show is about 200Hz
 
@@ -858,7 +889,7 @@ ISR (PCINT1_vect) // handle pin change interrupt for A0 to A5 here
      
      while (v>1.0) {   // hitting bottom is 70% elastic
         bounce(v);
-        v*=0.75;
+        v*=0.50;
       }
     }
 
