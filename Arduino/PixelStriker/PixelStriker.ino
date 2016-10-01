@@ -672,9 +672,13 @@ void bounce(float v0) {  // v0= initial speed meters per second up
   
   static float g=-8.5;   // Gravity accelerating down 
 
-  float t=0;        // Time
- // float x=0;        // Vertical position in meters (up is +)
+  float x=0;        // Vertical position in meters (up is +)
+  float dt=MIN_FRAME_TIME;      // Time that elapsed since last frame was drawn
+
+  
   float v=v0;       // Velocity 
+
+  
   float f = 1.2;    // Frictional force - alwasy acts in oposite direction of motion TODO
 
   int puckRow_prev = 0;     // Location of previous starting s so we can fill inbtween
@@ -682,7 +686,11 @@ void bounce(float v0) {  // v0= initial speed meters per second up
 
   while (1) {
 
-    float x =  ( v0 * t ) + ( 0.5 * ( g * t * t ) );
+    float v_new = v + ( g * dt );
+
+    x =  x + ((v + v_new)/2); 
+
+    v=v_new;
 
     if (x<0) break;  // dont fall though the ground  
 
@@ -792,7 +800,6 @@ void bounce(float v0) {  // v0= initial speed meters per second up
       show();
     }
     
-    t = t + dt;
 
     puckRow_prevprev= puckRow_prev;
     puckRow_prev = puckRow;
@@ -898,8 +905,6 @@ void showstarfield() {
 
   const uint8_t field = 40;       // Good size for a field, must be less than 256 so counters fit in a byte
  
-  uint8_t sectors = (PIXELS / field);      // Repeating sectors makes for more stars and faster update
-
   for(unsigned int i=0; i<300;i++) {
 
     unsigned int r = random( PIXELS * 8 );   // Random slow, so grab one big number and we will break it down. 
