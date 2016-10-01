@@ -1124,41 +1124,26 @@ void showallyourbase() {
 void showjabber() {
 
   const char *m = 
-          
-      "Twas brillig, and the slithy toves "
-            "Did gyre and gimble in the wabe: "
-      "All mimsy were the borogoves, "
-            "And the mome raths outgrabe. "
-      
-      "Beware the Jabberwock, my son! "
-            "The jaws that bite, the claws that catch! "
-      "Beware the Jubjub bird, and shun "      
-            "The frumious Bandersnatch! "
-      
-      "He took his vorpal sword in hand; "
-            "Long time the manxome foe he sought- "
-      "So rested he by the Tumtum tree "
-            "And stood awhile in thought. "
-      
-      "And, as in uffish thought he stood, "
-            "The Jabberwock, with eyes of flame, "
-      "Came whiffling through the tulgey wood, "      
-            "And burbled as it came! "
-      
-      "One, two! One, two! And through and through "
-            "The vorpal blade went snicker-snack! "
-      "He left it dead, and with its head "
-            "He went galumphing back. "
-      
-      "And hast thou slain the Jabberwock? "
-            "Come to my arms, my beamish boy! "
-      "O frabjous day! Callooh! Callay! "
-            "He chortled in his joy. "
-      
-      "Twas brillig, and the slithy toves "
-            "Did gyre and gimble in the wabe: "
-      "All mimsy were the borogoves, "
-            "And the mome raths outgrabe."  
+
+"                                              "
+"Come one, Come all!     "
+"TEST YOUR STRENGTH!              "
+"Measure your might with the fabulous PIXELSTRIKER!      "
+"Feel the High voltage driving our soleniod stiker!             "
+"Dazzle your date!                  "
+"Arduino powered, Neopixel goodness!           "
+"Ring the bell and win a fine chocolate cigar!       "
+"Men can wow the ladies, women can wow the men!       "
+"Are you a creampuff or a creep?                    "
+"How many limit switches does it take to measure velocity?                   "
+"Stike it HIGH, strike it low, if you hit the bell then we all know...         "
+"If Superman came to Maker Faire, he would play the Pixel Striker!             "
+"15 feet of WS2812B glory! More than 2,000 individual RGB NeoPixels!                      "
+"We want a hitter, not a belly itcher!                              "
+"Visit PixelStriker.com for instructions to build your own!               "
+"                                              "
+
+
       
             ;
 
