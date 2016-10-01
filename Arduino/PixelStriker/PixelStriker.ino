@@ -1250,47 +1250,12 @@ void setup() {
 
 
 void loop() {
-/*
-  pinMode( BELL_PIN , OUTPUT );
-  digitalWrite( BELL_PIN , 1 );
-  
-  //delay(5);  //10500 is loudest, 5500 softest
-
-  _delay_us( 5600 );
-
-  digitalWrite( BELL_PIN , 0 );
-
-  delay(1000);
-  return;
-/*
-  while( digitalRead(A1) );
-
-  bounce();
-  return;
-*/
-
-return;
-
-for(int i=0;i<=10;i++) {
-  ringBell(i);
-  delay(100);
-}
-for(int i=10;i>0;i--) {
-  ringBell(i);
-  delay(100);
-}
-return;
-while(1);
-//cli();
-//bounce(3.0);
-//sei();
-return;
   showcountdown();
   showallyourbase();
   showstarfield();
   showinvaders();
   showjabber();
-
+  
   // TODO: Actually sample the state of the pullup on unused pins and OR it into the mask so we maintain the state.
   // Must do AFTER the cli(). 
   // TODO: Add offBits also to maintain the pullup state of unused pins. 
